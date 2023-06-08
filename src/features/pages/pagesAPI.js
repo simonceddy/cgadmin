@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { API_URL } from '../../consts';
 
 export const pagesAPI = createApi({
-  baseQuery: fetchBaseQuery(`${API_URL}/page`),
+  baseQuery: fetchBaseQuery({ baseUrl: `${API_URL}/page` }),
   reducerPath: 'pagesAPI',
   tagTypes: ['Page'],
   endpoints: (builder) => ({
@@ -46,6 +46,8 @@ export const pagesAPI = createApi({
     }),
   })
 });
+
+// console.log(pagesAPI);
 
 export const {
   useFetchPageQuery,

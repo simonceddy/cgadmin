@@ -1,7 +1,9 @@
-function CreateBlogPost({ children }) {
+import Tiptap from '../tiptap/Tiptap';
+
+function CreateBlogPost() {
   return (
     <div>
-      {children}
+      <Tiptap />
     </div>
   );
 }
