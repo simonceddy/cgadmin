@@ -1,0 +1,27 @@
+import { Link } from 'react-router-dom';
+import { useFetchPagesQuery } from './pagesAPI';
+import ErrorMessage from '../../components/ErrorMessage';
+
+function ListPages() {
+  const { data, error, isLoading } = useFetchPagesQuery();
+  if (isLoading) {
+    return (
+      <div>
+        Loading
+      </div>
+    );
+  }
+
+  if (error) return <ErrorMessage error={error} />;
+
+  // console.log(data);
+  return (
+    <div className="w-full h-full flex flex-col justify-center items-center bg-black text-lime-200">
+      {data.map((page) => (
+        <Link to={`/edit/${page.slug}`} key={`${page.slug}`}>{page.title}</Link>
+      ))}
+    </div>
+  );
+}
+
+export default ListPages;

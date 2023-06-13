@@ -7,7 +7,7 @@ function App() {
   const location = useLocation();
   const outlet = useOutlet();
   const { nodeRef } = routes.find((route) => route.path === location.pathname) ?? {};
-  console.log(nodeRef);
+  // console.log(nodeRef);
   return (
     <div className="w-full h-full flex flex-col justify-center items-center bg-black text-lime-200 font-sans overflow-hidden">
       <div>

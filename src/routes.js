@@ -1,6 +1,6 @@
 import { createRef } from 'react';
-import CreateBlogPost from './features/blog/CreateBlogPost';
-import ListBlogPosts from './features/blog/ListBlogPosts';
+import ListPages from './features/pages/ListPages';
+import EditPage from './features/pages/EditPage';
 
 const routes = [
   {
@@ -14,21 +14,21 @@ const routes = [
     key: 'pages',
     nodeRef: createRef(),
     path: '/pages',
-    element: <div>Pages</div>,
+    element: <ListPages />,
     label: 'Pages',
   },
+  // {
+  //   key: 'blog',
+  //   nodeRef: createRef(),
+  //   path: '/blog',
+  //   element: <ListBlogPosts />,
+  //   label: 'Blog',
+  // },
   {
-    key: 'blog',
+    key: 'editPage',
     nodeRef: createRef(),
-    path: '/blog',
-    element: <ListBlogPosts />,
-    label: 'Blog',
-  },
-  {
-    key: 'newBlogPost',
-    nodeRef: createRef(),
-    path: '/blog/newPost',
-    element: <CreateBlogPost />,
+    path: '/edit/:slug',
+    element: <EditPage />,
   }
 ];
 
