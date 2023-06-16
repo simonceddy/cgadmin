@@ -2,6 +2,8 @@
 import { useEditor, EditorContent } from '@tiptap/react';
 // import { EditorView } from 'prosemirror-view';
 import StarterKit from '@tiptap/starter-kit';
+import TextAlign from '@tiptap/extension-text-align';
+import Image from '@tiptap/extension-image';
 import './Tiptap.scss';
 import MenuBar from './MenuBar';
 
@@ -16,6 +18,8 @@ function Tiptap({
   const editor = useEditor({
     extensions: [
       StarterKit,
+      TextAlign,
+      Image,
     ],
     editorProps: {
       attributes: {
