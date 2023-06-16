@@ -2,10 +2,12 @@
 import { useEditor, EditorContent } from '@tiptap/react';
 // import { EditorView } from 'prosemirror-view';
 import StarterKit from '@tiptap/starter-kit';
-import TextAlign from '@tiptap/extension-text-align';
 import Image from '@tiptap/extension-image';
 import './Tiptap.scss';
 import MenuBar from './MenuBar';
+import CustomHeading from './ext/CustomHeadings';
+import CustomAlign from './ext/CustomAlign';
+import UploadFile from '../upload/UploadFile';
 
 // EditorView.prototype.updateState = function updateState(state) {
 //   if (!this.docView) return; // This prevents the matchesNode error on hot reloads
@@ -17,8 +19,13 @@ function Tiptap({
 }) {
   const editor = useEditor({
     extensions: [
-      StarterKit,
-      TextAlign,
+      StarterKit.configure({
+        heading: false,
+      }),
+      CustomHeading,
+      CustomAlign.configure({
+        types: ['heading', 'paragraph'],
+      }),
       Image,
     ],
     editorProps: {
@@ -57,6 +64,7 @@ function Tiptap({
         {label}
       </div>
       )}
+      <UploadFile />
       <div
         className="border-2 font-bold border-slate-400 dark:border-slate-600 w-full"
       >

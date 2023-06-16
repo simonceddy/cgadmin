@@ -17,12 +17,12 @@ import {
   FaRedo as RedoIcon,
 } from 'react-icons/fa';
 import {
-  RiH1 as H1Icon,
+  // RiH1 as H1Icon,
   RiH2 as H2Icon,
   RiH3 as H3Icon,
   RiH4 as H4Icon,
   RiH5 as H5Icon,
-  RiH6 as H6Icon,
+  // RiH6 as H6Icon,
 } from 'react-icons/ri';
 import TiptapMenuBtn from '../../components/TiptapMenuBtn';
 
@@ -67,12 +67,12 @@ function MenuBar({ editor }) {
       >
         clear nodes
       </TiptapMenuBtn> */}
-      <TiptapMenuBtn
+      {/* <TiptapMenuBtn
         onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
         className={editor.isActive('heading', { level: 1 }) ? 'is-active' : ''}
       >
         <H1Icon size={18} />
-      </TiptapMenuBtn>
+      </TiptapMenuBtn> */}
       <TiptapMenuBtn
         onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
         className={editor.isActive('heading', { level: 2 }) ? 'is-active' : ''}
@@ -97,12 +97,12 @@ function MenuBar({ editor }) {
       >
         <H5Icon size={18} />
       </TiptapMenuBtn>
-      <TiptapMenuBtn
+      {/* <TiptapMenuBtn
         onClick={() => editor.chain().focus().toggleHeading({ level: 6 }).run()}
         className={editor.isActive('heading', { level: 6 }) ? 'is-active' : ''}
       >
         <H6Icon size={18} />
-      </TiptapMenuBtn>
+      </TiptapMenuBtn> */}
       <TiptapMenuBtn
         onClick={() => editor.chain().focus().setTextAlign('left').run()}
         className={editor.isActive({ textAlign: 'left' }) ? 'is-active' : ''}

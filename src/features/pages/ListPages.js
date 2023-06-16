@@ -18,7 +18,13 @@ function ListPages() {
   return (
     <div className="w-full h-full flex flex-col justify-center items-center bg-black text-lime-200">
       {data.map((page) => (
-        <Link to={`/edit/${page.slug}`} key={`${page.slug}`}>{page.title}</Link>
+        <Link
+          className="p-1 m-1 text-xl hover:underline"
+          to={`/edit/${page.slug}`}
+          key={`${page.slug}`}
+        >
+          {page.title}
+        </Link>
       ))}
     </div>
   );
