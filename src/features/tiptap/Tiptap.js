@@ -7,7 +7,6 @@ import './Tiptap.scss';
 import MenuBar from './MenuBar';
 import CustomHeading from './ext/CustomHeadings';
 import CustomAlign from './ext/CustomAlign';
-import UploadFile from '../upload/UploadFile';
 
 // EditorView.prototype.updateState = function updateState(state) {
 //   if (!this.docView) return; // This prevents the matchesNode error on hot reloads
@@ -64,7 +63,6 @@ function Tiptap({
         {label}
       </div>
       )}
-      <UploadFile />
       <div
         className="border-2 font-bold border-slate-400 dark:border-slate-600 w-full"
       >

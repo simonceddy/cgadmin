@@ -4,6 +4,16 @@ const defaultTheme = require('tailwindcss/defaultTheme');
 module.exports = {
   content: ['src/**/*.js'],
   theme: {
+    colors: {
+      transparent: 'transparent',
+      current: 'currentColor',
+      white: '#ffffff',
+      dandelion: '#fed361',
+      'pastel-green': '#84ee95',
+      'cornflower-blue': '#5dabf4',
+      black: '#000000',
+      'aqua-spring': '#effaf6',
+    },
     extend: {
       fontFamily: {
         sans: [

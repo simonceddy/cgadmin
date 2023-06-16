@@ -16,7 +16,7 @@ function ListPages() {
 
   // console.log(data);
   return (
-    <div className="w-full h-full flex flex-col justify-center items-center bg-black text-lime-200">
+    <div className="w-full h-full flex flex-col justify-center items-center">
       {data.map((page) => (
         <Link
           className="p-1 m-1 text-xl hover:underline"
