@@ -37,10 +37,10 @@ const IMAGE_INPUT_REGEX = /!\[(.+|:?)\]\((\S+)(?:(?:\s+)["'](\S+)["'])?\)/;
 export const TipTapCustomImage = (uploadFn) => Node.create({
   name: 'image',
 
-  defaultOptions: {
+  addOptions: () => ({
     inline: false,
     HTMLAttributes: {},
-  },
+  }),
 
   inline() {
     return this.options.inline;
@@ -97,13 +97,17 @@ export const TipTapCustomImage = (uploadFn) => Node.create({
   },
   addInputRules() {
     return [
-      nodeInputRule(IMAGE_INPUT_REGEX, this.type, (match) => {
-        const [, alt, src, title] = match;
-        return {
-          src,
-          alt,
-          title,
-        };
+      nodeInputRule({
+        find: IMAGE_INPUT_REGEX,
+        type: this.type,
+        getAttributes: (match) => {
+          const [, alt, src, title] = match;
+          return {
+            src,
+            alt,
+            title,
+          };
+        }
       }),
     ];
   },

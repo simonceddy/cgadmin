@@ -1,9 +1,10 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Tiptap from '../tiptap/Tiptap';
 import { useFetchPageQuery, useUpdatePageMutation } from './pagesAPI';
 import ErrorMessage from '../../components/ErrorMessage';
 import UploadFile from '../upload/UploadFile';
+import ErrorBoundary from '../../containers/ErrorBoundary';
 
 function EditPage() {
   const { slug } = useParams();
@@ -26,6 +27,8 @@ function EditPage() {
     console.log(result);
   };
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (isSuccess && data.title) {
       console.log('set body');
@@ -37,39 +40,52 @@ function EditPage() {
   if (error) return <ErrorMessage error={error} />;
   // console.log(body);
   return (
-    <div className="col w-full">
-      {message && (
+    <ErrorBoundary>
+      <div className="col w-full">
+        {message && (
         <div>
           <div>{message}</div>
           <button onClick={() => setMessage(null)} type="button">
             OK
           </button>
         </div>
-      )}
-      <h1 className="text-xl m-2">
-        Editing
-        <span className="ml-1 font-bold">
-          {data.title}
-        </span>
-      </h1>
-      <UploadFile
-        onUpload={() => {
-          setMessage('uploading!');
-        }}
-      />
-      <div className="row w-full m-2">
-        {body && <Tiptap content={body} setContent={setBody} />}
+        )}
+        <h1 className="text-xl m-2">
+          Editing
+          <span className="ml-1 font-bold">
+            {data.title}
+          </span>
+        </h1>
+        <UploadFile
+          onUpload={() => {
+            setMessage('uploading!');
+          }}
+        />
+        <div className="row w-full m-2 h-[400px]">
+          {body && <Tiptap content={body} setContent={setBody} />}
+        </div>
+        <div>
+          <button
+            className="border-2 border-black hover:border-cornflower-blue active:border-pastel-green p-2 rounded-md m-2"
+            type="button"
+            onClick={() => {
+              saveData();
+            }}
+          >
+            Save
+          </button>
+          <button
+            className="border-2 border-black hover:border-cornflower-blue active:border-pastel-green p-2 rounded-md m-2"
+            type="button"
+            onClick={() => {
+              navigate('/pages');
+            }}
+          >
+            Cancel
+          </button>
+        </div>
       </div>
-      <button
-        className="border-2 border-black hover:border-cornflower-blue active:border-pastel-green p-2 rounded-md m-2"
-        type="button"
-        onClick={() => {
-          saveData();
-        }}
-      >
-        Save
-      </button>
-    </div>
+    </ErrorBoundary>
   );
 }
 

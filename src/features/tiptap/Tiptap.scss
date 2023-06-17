@@ -1,5 +1,9 @@
 /* Basic editor styles */
 .ProseMirror {
+  height: 100%;
+  // overflow-y: scroll;
+  width: 90%;
+
   > * + * {
     margin-top: 0.75em;
   }
