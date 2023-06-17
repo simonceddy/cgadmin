@@ -15,6 +15,8 @@ import {
   FaQuoteLeft as BlockquoteIcon,
   FaUndo as UndoIcon,
   FaRedo as RedoIcon,
+  FaFileImage as ImageIcon,
+  FaLink as LinkIcon,
 } from 'react-icons/fa';
 import {
   // RiH1 as H1Icon,
@@ -24,9 +26,35 @@ import {
   RiH5 as H5Icon,
   // RiH6 as H6Icon,
 } from 'react-icons/ri';
-import TiptapMenuBtn from '../../components/TiptapMenuBtn';
+import {
+  GoHorizontalRule as LineIcon
+} from 'react-icons/go';
+import { useCallback } from 'react';
+import TiptapMenuBtn from './components/TiptapMenuBtn';
 
 function MenuBar({ editor }) {
+  const setLink = useCallback(() => {
+    const previousUrl = editor.getAttributes('link').href;
+    // eslint-disable-next-line no-alert
+    const url = window.prompt('URL', previousUrl);
+
+    // cancelled
+    if (url === null) {
+      return;
+    }
+
+    // empty
+    if (url === '') {
+      editor.chain().focus().extendMarkRange('link').unsetLink()
+        .run();
+
+      return;
+    }
+
+    // update link
+    editor.chain().focus().extendMarkRange('link').setLink({ href: url })
+      .run();
+  }, [editor]);
   if (!editor) {
     return null;
   }
@@ -154,7 +182,7 @@ function MenuBar({ editor }) {
       <TiptapMenuBtn
         onClick={() => editor.chain().focus().setHorizontalRule().run()}
       >
-        horizontal rule
+        <LineIcon size={18} />
       </TiptapMenuBtn>
       <TiptapMenuBtn
         onClick={() => editor.chain().focus().setHardBreak().run()}
@@ -170,6 +198,16 @@ function MenuBar({ editor }) {
         onClick={() => editor.chain().focus().redo().run()}
       >
         <RedoIcon size={18} />
+      </TiptapMenuBtn>
+      <TiptapMenuBtn
+        onClick={() => {}}
+      >
+        <ImageIcon size={18} />
+      </TiptapMenuBtn>
+      <TiptapMenuBtn
+        onClick={setLink}
+      >
+        <LinkIcon size={18} />
       </TiptapMenuBtn>
     </div>
   );

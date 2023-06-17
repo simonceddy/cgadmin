@@ -3,6 +3,7 @@ import { useEditor, EditorContent } from '@tiptap/react';
 // import { EditorView } from 'prosemirror-view';
 import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
+import Link from '@tiptap/extension-link';
 import './Tiptap.scss';
 import MenuBar from './MenuBar';
 import CustomHeading from './ext/CustomHeadings';
@@ -20,6 +21,16 @@ function Tiptap({
     extensions: [
       StarterKit.configure({
         heading: false,
+        horizontalRule: {
+          HTMLAttributes: {
+            class: 'h-px my-8 bg-gray-200 border-0 dark:bg-gray-700'
+          }
+        }
+      }),
+      Link.configure({
+        HTMLAttributes: {
+          class: 'hover:underline cursor-pointer'
+        }
       }),
       CustomHeading,
       CustomAlign.configure({
