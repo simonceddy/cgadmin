@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import Tiptap from '../tiptap/Tiptap';
 import { useFetchPageQuery, useUpdatePageMutation } from './pagesAPI';
 import ErrorMessage from '../../components/ErrorMessage';
-import UploadFile from '../upload/UploadFile';
+// import UploadFile from '../upload/UploadFile';
 import ErrorBoundary from '../../containers/ErrorBoundary';
 
 function EditPage() {
@@ -43,9 +43,13 @@ function EditPage() {
     <ErrorBoundary>
       <div className="col w-full">
         {message && (
-        <div>
-          <div>{message}</div>
-          <button onClick={() => setMessage(null)} type="button">
+        <div className="p-2 col border-cornflower-blue border-2 rounded-md justify-center items-center">
+          <div className="mb-2 font-bold">{message}</div>
+          <button
+            className="border-2 border-cornflower-blue active:border-pastel-green hover:underline p-2 m-2"
+            onClick={() => setMessage(null)}
+            type="button"
+          >
             OK
           </button>
         </div>
@@ -56,11 +60,11 @@ function EditPage() {
             {data.title}
           </span>
         </h1>
-        <UploadFile
+        {/* <UploadFile
           onUpload={() => {
             setMessage('uploading!');
           }}
-        />
+        /> */}
         <div className="row w-full m-2 h-[400px]">
           {body && <Tiptap content={body} setContent={setBody} />}
         </div>

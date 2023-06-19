@@ -1,14 +1,16 @@
 /* eslint-disable no-unused-vars */
 import { useEditor, EditorContent } from '@tiptap/react';
-// import { EditorView } from 'prosemirror-view';
 import StarterKit from '@tiptap/starter-kit';
-// import Image from '@tiptap/extension-image';
+import CharacterCount from '@tiptap/extension-character-count';
 import Link from '@tiptap/extension-link';
 import './Tiptap.scss';
+import { useEffect, useState } from 'react';
 import MenuBar from './MenuBar';
 import CustomHeading from './ext/CustomHeadings';
 import CustomAlign from './ext/CustomAlign';
 import { TipTapCustomImage } from './Image';
+import ImageForm from './components/ImageForm';
+import { readFileAsDataURL } from './support';
 
 // EditorView.prototype.updateState = function updateState(state) {
 //   if (!this.docView) return; // This prevents the matchesNode error on hot reloads
@@ -18,12 +20,14 @@ import { TipTapCustomImage } from './Image';
 function Tiptap({
   content, label, setContent, tabIndex
 }) {
+  const [file, setFile] = useState(null);
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
         heading: false,
         horizontalRule: {
           HTMLAttributes: {
+            // TODO update colour classes
             class: 'h-px my-8 bg-gray-200 border-0 dark:bg-gray-700'
           }
         }
@@ -41,6 +45,7 @@ function Tiptap({
       TipTapCustomImage((v) => {
         console.log(v);
       }),
+      CharacterCount,
     ],
     editorProps: {
       attributes: {
@@ -69,7 +74,24 @@ function Tiptap({
     // },
   });
 
-  // console.log(editor);
+  const handleUpload = async (f) => {
+    const result = await readFileAsDataURL(f);
+
+    return result;
+  };
+
+  useEffect(() => {
+    async function handleImageUpload() {
+      if (file && editor) {
+        const src = await handleUpload(file);
+        console.log({ src });
+        editor.chain().focus()?.setImage({ src })?.run();
+      }
+    }
+    handleImageUpload();
+  }, [file]);
+
+  console.log(editor);
 
   return (
     <>
@@ -78,6 +100,11 @@ function Tiptap({
         {label}
       </div>
       )}
+      <ImageForm
+        onInput={(e) => {
+          console.log(e.target.files);
+        }}
+      />
       <div
         className="border-2 font-bold border-slate-400 dark:border-slate-600 w-full"
       >
@@ -85,10 +112,15 @@ function Tiptap({
         <EditorContent
           tabIndex={tabIndex}
           editor={editor}
-          style={{
-            height: '120px'
-          }}
         />
+        <div className="row w-full justify-start items-center border-t">
+          <span className="border-r ml-2 p-1">
+            {editor.storage.characterCount.characters()} characters
+          </span>
+          <span className="border-r ml-2 p-1">
+            {editor.storage.characterCount.words()} words
+          </span>
+        </div>
       </div>
     </>
   );
