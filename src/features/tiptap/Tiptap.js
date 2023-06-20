@@ -11,6 +11,7 @@ import CustomAlign from './ext/CustomAlign';
 import { TipTapCustomImage } from './Image';
 import ImageForm from './components/ImageForm';
 import { readFileAsDataURL } from './support';
+import { MEDIA_URL } from '../../consts';
 
 // EditorView.prototype.updateState = function updateState(state) {
 //   if (!this.docView) return; // This prevents the matchesNode error on hot reloads
@@ -18,13 +19,13 @@ import { readFileAsDataURL } from './support';
 // };
 
 function srcUrl(src) {
-  return `http://localhost:8888/media/get/${src}`;
+  return `${MEDIA_URL}/get/${src}`;
 }
 
 async function upload(file) {
   const formData = new FormData();
   formData.append(file.name || 'file', file);
-  const res = await fetch('http://localhost:8888/media/upload', {
+  const res = await fetch(`${MEDIA_URL}upload`, {
     method: 'POST',
     body: formData
   });
