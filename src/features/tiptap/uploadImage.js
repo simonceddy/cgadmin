@@ -14,7 +14,7 @@ export const uploadImagePlugin = (upload) => new Plugin({
       const items = Array.from(event.clipboardData?.items || []);
       const { schema } = view.state;
 
-      console.log({ items });
+      // console.log({ items });
 
       items.forEach((item) => {
         const image = item.getAsFile();

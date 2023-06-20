@@ -17,6 +17,22 @@ import { readFileAsDataURL } from './support';
 //   this.updateStateInner(state, this.state.plugins !== state.plugins);
 // };
 
+function srcUrl(src) {
+  return `http://localhost:8888/media/get/${src}`;
+}
+
+async function upload(file) {
+  const formData = new FormData();
+  formData.append(file.name || 'file', file);
+  const res = await fetch('http://localhost:8888/media/upload', {
+    method: 'POST',
+    body: formData
+  });
+  const json = await res.json();
+  console.log(file, json);
+  return json.src ? srcUrl(json.src) : null;
+}
+
 function Tiptap({
   content, label, setContent, tabIndex
 }) {
@@ -28,7 +44,7 @@ function Tiptap({
         horizontalRule: {
           HTMLAttributes: {
             // TODO update colour classes
-            class: 'h-px my-8 bg-gray-200 border-0 dark:bg-gray-700'
+            class: 'h-px my-8 bg-black border-0'
           }
         }
       }),
@@ -42,9 +58,7 @@ function Tiptap({
         types: ['heading', 'paragraph'],
       }),
       // Image,
-      TipTapCustomImage((v) => {
-        console.log(v);
-      }),
+      TipTapCustomImage(upload),
       CharacterCount,
     ],
     editorProps: {
@@ -91,7 +105,9 @@ function Tiptap({
     handleImageUpload();
   }, [file]);
 
-  console.log(editor);
+  if (!editor) return <div>An issue prevented the editor from starting</div>;
+
+  // console.log(editor);
 
   return (
     <>
@@ -106,7 +122,7 @@ function Tiptap({
         }}
       />
       <div
-        className="border-2 font-bold border-slate-400 dark:border-slate-600 w-full"
+        className="border-2 col font-bold border-slate-400 dark:border-slate-600 w-full"
       >
         <MenuBar editor={editor} />
         <EditorContent
