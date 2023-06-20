@@ -25,7 +25,7 @@ function srcUrl(src) {
 async function upload(file) {
   const formData = new FormData();
   formData.append(file.name || 'file', file);
-  const res = await fetch(`${MEDIA_URL}upload`, {
+  const res = await fetch(`${MEDIA_URL}/upload`, {
     method: 'POST',
     body: formData
   });
