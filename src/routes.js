@@ -1,6 +1,7 @@
 import { createRef } from 'react';
 import ListPages from './features/pages/ListPages';
 import EditPage from './features/pages/EditPage';
+import CreatePage from './features/pages/CreatePage';
 
 const routes = [
   {
@@ -17,13 +18,13 @@ const routes = [
     element: <ListPages />,
     label: 'Pages',
   },
-  // {
-  //   key: 'blog',
-  //   nodeRef: createRef(),
-  //   path: '/blog',
-  //   element: <ListBlogPosts />,
-  //   label: 'Blog',
-  // },
+  {
+    key: 'createPage',
+    nodeRef: createRef(),
+    path: '/create/page',
+    element: <CreatePage />,
+    label: 'Create Page',
+  },
   {
     key: 'editPage',
     nodeRef: createRef(),

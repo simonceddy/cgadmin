@@ -11,33 +11,19 @@ import CustomAlign from './ext/CustomAlign';
 import { TipTapCustomImage } from './Image';
 import ImageForm from './components/ImageForm';
 import { readFileAsDataURL } from './support';
-import { MEDIA_URL } from '../../consts';
+import ImageProps from './components/ImageProps';
+import { upload } from '../../util/media';
 
 // EditorView.prototype.updateState = function updateState(state) {
 //   if (!this.docView) return; // This prevents the matchesNode error on hot reloads
 //   this.updateStateInner(state, this.state.plugins !== state.plugins);
 // };
 
-function srcUrl(src) {
-  return `${MEDIA_URL}/get/${src}`;
-}
-
-async function upload(file) {
-  const formData = new FormData();
-  formData.append(file.name || 'file', file);
-  const res = await fetch(`${MEDIA_URL}/upload`, {
-    method: 'POST',
-    body: formData
-  });
-  const json = await res.json();
-  console.log(file, json);
-  return json.src ? srcUrl(json.src) : null;
-}
-
 function Tiptap({
   content, label, setContent, tabIndex
 }) {
-  const [file, setFile] = useState(null);
+  // const [file, setFile] = useState(null);
+  const [selectedImg, setSelectedImg] = useState(null);
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -84,27 +70,31 @@ function Tiptap({
     // onSelectionUpdate: () => {
     //   // console.log('selection update event');
     // },
-    // onTransaction: ({ editor: e, transaction: t }) => {
-    //   // console.log('transaction event');
+    // onTransaction: ({ editor: e, transaction }) => {
+    //   const img = e.getAttributes('image');
+    //   if (img.src) {
+    //     // console.log('transaction event', img, transaction);
+    //     setSelectedImg(img);
+    //   }
     // },
   });
 
-  const handleUpload = async (f) => {
-    const result = await readFileAsDataURL(f);
+  // const handleUpload = async (f) => {
+  //   const result = await readFileAsDataURL(f);
 
-    return result;
-  };
+  //   return result;
+  // };
 
-  useEffect(() => {
-    async function handleImageUpload() {
-      if (file && editor) {
-        const src = await handleUpload(file);
-        console.log({ src });
-        editor.chain().focus()?.setImage({ src })?.run();
-      }
-    }
-    handleImageUpload();
-  }, [file]);
+  // useEffect(() => {
+  //   async function handleImageUpload() {
+  //     if (file && editor) {
+  //       const src = await handleUpload(file);
+  //       console.log({ src });
+  //       editor.chain().focus()?.setImage({ src })?.run();
+  //     }
+  //   }
+  //   handleImageUpload();
+  // }, [file]);
 
   if (!editor) return <div>An issue prevented the editor from starting</div>;
 
@@ -117,15 +107,30 @@ function Tiptap({
         {label}
       </div>
       )}
-      <ImageForm
+      {/* <ImageForm
         onInput={(e) => {
           console.log(e.target.files);
         }}
+      /> */}
+      {selectedImg && (
+      <ImageProps
+        setWidth={(v) => {
+          console.log(v);
+          // console.log(editor.chain().focus());
+        }}
+        onClose={() => setSelectedImg(null)}
+        image={selectedImg}
       />
+      )}
       <div
         className="border-2 col font-bold border-slate-400 dark:border-slate-600 w-full"
       >
-        <MenuBar editor={editor} />
+        <MenuBar
+          setImage={(i) => {
+            setSelectedImg(i);
+          }}
+          editor={editor}
+        />
         <EditorContent
           tabIndex={tabIndex}
           editor={editor}

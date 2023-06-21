@@ -63,8 +63,15 @@ export const TipTapCustomImage = (uploadFn) => Node.create({
       title: {
         default: null,
       },
+      width: {
+        default: null,
+      },
+      height: {
+        default: null,
+      },
     };
   },
+
   parseHTML: () => [
     {
       tag: 'img[src]',
@@ -76,12 +83,17 @@ export const TipTapCustomImage = (uploadFn) => Node.create({
           src: element.getAttribute('src'),
           title: element.getAttribute('title'),
           alt: element.getAttribute('alt'),
+          width: element.getAttribute('width'),
+          height: element.getAttribute('height'),
         };
         return obj;
       },
     },
   ],
-  renderHTML: ({ HTMLAttributes }) => ['img', mergeAttributes(HTMLAttributes)],
+  renderHTML: ({ HTMLAttributes }) => {
+    console.log(HTMLAttributes);
+    return ['img', mergeAttributes(HTMLAttributes)];
+  },
 
   addCommands() {
     return {
@@ -91,6 +103,7 @@ export const TipTapCustomImage = (uploadFn) => Node.create({
 
         const node = this.type.create(attrs);
         const transaction = state.tr.insert(position, node);
+        console.log('set image command');
         return dispatch?.(transaction);
       },
     };
@@ -101,11 +114,13 @@ export const TipTapCustomImage = (uploadFn) => Node.create({
         find: IMAGE_INPUT_REGEX,
         type: this.type,
         getAttributes: (match) => {
-          const [, alt, src, title] = match;
+          const [, alt, src, title, width, height] = match;
           return {
             src,
             alt,
             title,
+            width,
+            height
           };
         }
       }),

@@ -32,7 +32,19 @@ import {
 import { useCallback } from 'react';
 import TiptapMenuBtn from './components/TiptapMenuBtn';
 
-function MenuBar({ editor }) {
+/**
+ * @typedef {object} props
+ * @property {import('@tiptap/react').Editor} editor
+ * @property {Function} setImage
+ */
+
+/**
+ * @param {props} props
+ */
+function MenuBar({
+  editor,
+  setImage
+}) {
   const setLink = useCallback(() => {
     const previousUrl = editor.getAttributes('link').href;
     // eslint-disable-next-line no-alert
@@ -200,7 +212,14 @@ function MenuBar({ editor }) {
         <RedoIcon size={18} />
       </TiptapMenuBtn>
       <TiptapMenuBtn
-        onClick={() => {}}
+        onClick={() => {
+          const img = editor.getAttributes('image');
+          if (img.src) {
+            setImage(img);
+          } else {
+            console.log('add image');
+          }
+        }}
       >
         <ImageIcon size={18} />
       </TiptapMenuBtn>

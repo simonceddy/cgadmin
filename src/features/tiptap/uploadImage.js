@@ -19,13 +19,14 @@ export const uploadImagePlugin = (upload) => new Plugin({
       items.forEach((item) => {
         const image = item.getAsFile();
 
-        console.log({ image, item });
+        // console.log({ image, item });
 
         if (item.type.indexOf('image') === 0) {
           console.log('item is an image');
           event.preventDefault();
 
           if (upload && image) {
+            // console.log(image);
             upload(image).then((src) => {
               const node = schema.nodes.image.create({
                 src,
