@@ -5,6 +5,7 @@ import CharacterCount from '@tiptap/extension-character-count';
 import Link from '@tiptap/extension-link';
 import './Tiptap.scss';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import MenuBar from './MenuBar';
 import CustomHeading from './ext/CustomHeadings';
 import CustomAlign from './ext/CustomAlign';
@@ -13,6 +14,7 @@ import ImageForm from './components/ImageForm';
 import { readFileAsDataURL } from './support';
 import ImageProps from './components/ImageProps';
 import { upload } from '../../util/media';
+import Button from '../../components/Button';
 
 // EditorView.prototype.updateState = function updateState(state) {
 //   if (!this.docView) return; // This prevents the matchesNode error on hot reloads
@@ -20,10 +22,12 @@ import { upload } from '../../util/media';
 // };
 
 function Tiptap({
-  content, label, setContent, tabIndex
+  content, label, setContent, tabIndex, saveData, onCancel
 }) {
   // const [file, setFile] = useState(null);
   const [selectedImg, setSelectedImg] = useState(null);
+  const [modified, setModified] = useState(false);
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -51,13 +55,14 @@ function Tiptap({
     editorProps: {
       attributes: {
         class: 'prose prose-sm sm:prose lg:prose-lg xl:prose-2xl focus:outline-none whitespace-pre-wrap overflow-y-scroll w-full',
-        style: 'height: 400px;'
+        style: 'height: 450px;'
       },
     },
     content: content || '',
     onUpdate: ({ editor: e }) => {
       // console.log(e.getText());
       // console.log(e.getHTML(), transaction);
+      if (!modified) setModified(true);
       if (setContent) setContent(e.getHTML());
     },
     // onBeforeCreate: ({ editor: e }) => {
@@ -116,6 +121,11 @@ function Tiptap({
       <ImageProps
         setWidth={(v) => {
           console.log(v);
+          // TODO Figure out how to do this
+          editor.chain().focus().setImage({
+            ...selectedImg,
+            width: Number(v)
+          }).run();
           // console.log(editor.chain().focus());
         }}
         onClose={() => setSelectedImg(null)}
@@ -123,25 +133,47 @@ function Tiptap({
       />
       )}
       <div
-        className="border-2 col font-bold border-slate-400 dark:border-slate-600 w-full"
+        className="border-2 col font-bold border-slate-400 dark:border-slate-600 w-full h-[500px]"
       >
-        <MenuBar
-          setImage={(i) => {
-            setSelectedImg(i);
-          }}
-          editor={editor}
-        />
-        <EditorContent
-          tabIndex={tabIndex}
-          editor={editor}
-        />
-        <div className="row w-full justify-start items-center border-t">
+        <div className="col w-full">
+          <MenuBar
+            setImage={(i) => {
+              setSelectedImg(i);
+            }}
+            editor={editor}
+          />
+          <EditorContent
+            tabIndex={tabIndex}
+            editor={editor}
+          />
+        </div>
+        <div className="row w-full mt-3 justify-start items-center border-t">
           <span className="border-r ml-2 p-1">
             {editor.storage.characterCount.characters()} characters
           </span>
           <span className="border-r ml-2 p-1">
             {editor.storage.characterCount.words()} words
           </span>
+        </div>
+        <div className="row w-full mt-2">
+          <Button
+            disabled={!modified}
+            onClick={() => {
+              if (saveData) {
+                saveData();
+                setModified(false);
+              }
+            }}
+          >
+            Save
+          </Button>
+          <Button
+            onClick={() => {
+              if (onCancel) onCancel();
+            }}
+          >
+            Cancel
+          </Button>
         </div>
       </div>
     </>

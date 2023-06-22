@@ -26,10 +26,18 @@ export const uploadImagePlugin = (upload) => new Plugin({
           event.preventDefault();
 
           if (upload && image) {
-            // console.log(image);
+            const url = URL.createObjectURL(image);
+            const i = new Image();
+            i.onload = () => {
+              console.log(i.width);
+            };
+            i.src = url;
+            // console.log(i);
             upload(image).then((src) => {
               const node = schema.nodes.image.create({
                 src,
+                width: i.width,
+                height: i.height
               });
               const transaction = view.state.tr.replaceSelectionWith(node);
               view.dispatch(transaction);
@@ -75,8 +83,16 @@ export const uploadImagePlugin = (upload) => new Plugin({
           const reader = new FileReader();
 
           if (upload) {
+            const url = URL.createObjectURL(image);
+            const i = new Image();
+            i.onload = () => {
+              console.log(i.width);
+            };
+            i.src = url;
             const node = schema.nodes.image.create({
               src: await upload(image),
+              width: i.width,
+              height: i.height
             });
             const transaction = view.state.tr.insert(coordinates.pos, node);
             view.dispatch(transaction);

@@ -63,11 +63,32 @@ export const TipTapCustomImage = (uploadFn) => Node.create({
       title: {
         default: null,
       },
+      class: {
+        default: null,
+        // renderHTML(/* attributes */) {
+        //   // console.log(attributes);
+        //   return {
+        //     class: 'w-96 max-h-96'
+        //   };
+        // }
+      },
       width: {
         default: null,
+        renderHTML(attributes) {
+          console.log(attributes);
+          return {
+            width: attributes.width || 320
+          };
+        }
       },
       height: {
         default: null,
+        renderHTML(attributes) {
+          // console.log(attributes);
+          return {
+            height: attributes.height || 320
+          };
+        }
       },
     };
   },
@@ -90,8 +111,9 @@ export const TipTapCustomImage = (uploadFn) => Node.create({
       },
     },
   ],
+  // eslint-disable-next-line arrow-body-style
   renderHTML: ({ HTMLAttributes }) => {
-    console.log(HTMLAttributes);
+    // console.log(HTMLAttributes);
     return ['img', mergeAttributes(HTMLAttributes)];
   },
 

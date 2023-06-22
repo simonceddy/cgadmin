@@ -1,3 +1,4 @@
+import Button from '../../../components/Button';
 import Modal from '../../../components/Modal';
 
 function ImageProps({
@@ -19,7 +20,7 @@ function ImageProps({
           <input
             className="p-1 rounded-md border border-cornflower-blue font-sans focus:border-pastel-green"
             type="number"
-            value={image?.width || ''}
+            value={image.width || ''}
             min={0}
             id="img-props-width"
             name="img-props-width"
@@ -41,7 +42,7 @@ function ImageProps({
           <input
             className="p-1 rounded-md border border-cornflower-blue font-sans focus:border-pastel-green"
             type="number"
-            value={image?.height || ''}
+            value={image.height || ''}
             min={0}
             id="img-props-height"
             name="img-props-height"
@@ -54,9 +55,9 @@ function ImageProps({
           </span>
         </label>
         {}
-        <button type="button" onClick={onClose}>
+        <Button onClick={onClose}>
           OK
-        </button>
+        </Button>
       </div>
     </Modal>
   );

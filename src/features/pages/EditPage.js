@@ -5,6 +5,7 @@ import { useFetchPageQuery, useUpdatePageMutation } from './pagesAPI';
 import ErrorMessage from '../../components/ErrorMessage';
 // import UploadFile from '../upload/UploadFile';
 import ErrorBoundary from '../../containers/ErrorBoundary';
+import Button from '../../components/Button';
 
 function EditPage() {
   const { slug } = useParams();
@@ -31,7 +32,7 @@ function EditPage() {
 
   useEffect(() => {
     if (isSuccess && data.title) {
-      console.log('set body');
+      // console.log('set body');
       setBody(data.body || '');
       // console.log(body);
     }
@@ -45,13 +46,11 @@ function EditPage() {
         {message && (
         <div className="p-2 col border-cornflower-blue border-2 rounded-md justify-center items-center">
           <div className="mb-2 font-bold">{message}</div>
-          <button
-            className="border-2 border-cornflower-blue active:border-pastel-green hover:underline p-2 m-2"
+          <Button
             onClick={() => setMessage(null)}
-            type="button"
           >
             OK
-          </button>
+          </Button>
         </div>
         )}
         <h1 className="text-xl m-2">
@@ -65,28 +64,17 @@ function EditPage() {
             setMessage('uploading!');
           }}
         /> */}
-        <div className="row w-full m-2 h-[400px]">
-          {body && <Tiptap content={body} setContent={setBody} />}
-        </div>
-        <div>
-          <button
-            className="border-2 border-black hover:border-cornflower-blue active:border-pastel-green p-2 rounded-md m-2"
-            type="button"
-            onClick={() => {
-              saveData();
-            }}
-          >
-            Save
-          </button>
-          <button
-            className="border-2 border-black hover:border-cornflower-blue active:border-pastel-green p-2 rounded-md m-2"
-            type="button"
-            onClick={() => {
+        <div className="row w-full m-2 h-full">
+          {body && (
+          <Tiptap
+            content={body}
+            setContent={setBody}
+            saveData={saveData}
+            onClose={() => {
               navigate('/pages');
             }}
-          >
-            Cancel
-          </button>
+          />
+          )}
         </div>
       </div>
     </ErrorBoundary>
