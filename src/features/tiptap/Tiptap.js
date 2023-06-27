@@ -22,7 +22,7 @@ import Button from '../../components/Button';
 // };
 
 function Tiptap({
-  content, label, setContent, tabIndex, saveData, onCancel
+  content, label, setContent, tabIndex, saveData, onClose
 }) {
   // const [file, setFile] = useState(null);
   const [selectedImg, setSelectedImg] = useState(null);
@@ -101,6 +101,12 @@ function Tiptap({
   //   handleImageUpload();
   // }, [file]);
 
+  const setImageAtrr = (attr = {}) => {
+    const newImgNode = editor.schema.nodes.image.create(attr);
+    const transaction = editor.view.state.tr.replaceSelectionWith(newImgNode);
+    editor.view.dispatch(transaction);
+  };
+
   if (!editor) return <div>An issue prevented the editor from starting</div>;
 
   // console.log(editor);
@@ -119,13 +125,51 @@ function Tiptap({
       /> */}
       {selectedImg && (
       <ImageProps
+        setImage={({ width, height }) => {
+          setImageAtrr({
+            ...selectedImg,
+            width,
+            height
+          });
+          const img = editor.getAttributes('image');
+          if (img.src) {
+            setSelectedImg(img);
+          }
+        }}
         setWidth={(v) => {
-          console.log(v);
-          // TODO Figure out how to do this
-          editor.chain().focus().setImage({
+          setImageAtrr({
             ...selectedImg,
             width: Number(v)
-          }).run();
+          });
+          const img = editor.getAttributes('image');
+          if (img.src) {
+            setSelectedImg(img);
+          } else {
+            console.log('add image');
+          }
+          // TODO Figure out how to do this
+          // editor.chain().focus().setImage({
+          //   ...selectedImg,
+          //   width: Number(v)
+          // }).run();
+          // console.log(editor.chain().focus());
+        }}
+        setHeight={(v) => {
+          setImageAtrr({
+            ...selectedImg,
+            height: Number(v)
+          });
+          const img = editor.getAttributes('image');
+          if (img.src) {
+            setSelectedImg(img);
+          } else {
+            console.log('add image');
+          }
+          // TODO Figure out how to do this
+          // editor.chain().focus().setImage({
+          //   ...selectedImg,
+          //   width: Number(v)
+          // }).run();
           // console.log(editor.chain().focus());
         }}
         onClose={() => setSelectedImg(null)}
@@ -169,7 +213,7 @@ function Tiptap({
           </Button>
           <Button
             onClick={() => {
-              if (onCancel) onCancel();
+              if (onClose) onClose();
             }}
           >
             Cancel

@@ -125,7 +125,7 @@ export const TipTapCustomImage = (uploadFn) => Node.create({
 
         const node = this.type.create(attrs);
         const transaction = state.tr.insert(position, node);
-        console.log('set image command');
+        // console.log('set image command');
         return dispatch?.(transaction);
       },
     };

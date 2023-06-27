@@ -1,10 +1,14 @@
+import { useState } from 'react';
 import Button from '../../../components/Button';
 import Modal from '../../../components/Modal';
 
 function ImageProps({
-  image, setWidth, setHeight, onClose
+  image, setImage, onClose
 }) {
-  console.log(image);
+  // console.log(image);
+  const [attributes, setAttributes] = useState({
+    ...image
+  });
   return (
     <Modal>
       <div
@@ -20,13 +24,14 @@ function ImageProps({
           <input
             className="p-1 rounded-md border border-cornflower-blue font-sans focus:border-pastel-green"
             type="number"
-            value={image.width || ''}
+            value={attributes.width || ''}
             min={0}
             id="img-props-width"
             name="img-props-width"
-            onChange={(e) => {
-              if (setWidth) setWidth(e.target.value);
-            }}
+            onChange={(e) => setAttributes({
+              ...attributes,
+              width: Number(e.target.value)
+            })}
           />
           <span>
             px
@@ -42,21 +47,32 @@ function ImageProps({
           <input
             className="p-1 rounded-md border border-cornflower-blue font-sans focus:border-pastel-green"
             type="number"
-            value={image.height || ''}
+            value={attributes.height || ''}
             min={0}
             id="img-props-height"
             name="img-props-height"
-            onChange={(e) => {
-              if (setHeight) setHeight(e.target.value);
-            }}
+            onChange={(e) => setAttributes({
+              ...attributes,
+              height: Number(e.target.value)
+            })}
           />
           <span>
             px
           </span>
         </label>
         {}
-        <Button onClick={onClose}>
+        <Button onClick={() => {
+          setImage(attributes);
+          if (onClose) onClose();
+        }}
+        >
           OK
+        </Button>
+        <Button onClick={() => {
+          if (onClose) onClose();
+        }}
+        >
+          Cancel
         </Button>
       </div>
     </Modal>
