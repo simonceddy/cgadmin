@@ -30,16 +30,16 @@ export const pagesAPI = createApi({
       invalidatesTags: ['Page']
     }),
     updatePage: builder.mutation({
-      query: ({ id, ...body }) => ({
-        url: `/update/${id}`,
+      query: ({ slug, ...body }) => ({
+        url: `/update/${slug}`,
         method: 'PUT',
         body
       }),
       invalidatesTags: ['Page']
     }),
     deletePage: builder.mutation({
-      query: ({ id }) => ({
-        url: `/delete/${id}`,
+      query: ({ slug }) => ({
+        url: `/delete/${slug}`,
         method: 'DELETE',
       }),
       invalidatesTags: ['Page']
