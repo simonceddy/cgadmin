@@ -6,6 +6,7 @@ import { store } from './app/store';
 import App from './App';
 import './styles';
 import routes from './routes';
+import './util/getCSRF';
 
 const container = document.getElementById('root');
 const root = createRoot(container);

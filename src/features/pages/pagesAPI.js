@@ -25,21 +25,24 @@ export const pagesAPI = createApi({
       query: ({ ...body }) => ({
         method: 'POST',
         body,
-        url: '/create'
+        url: '/'
       }),
       invalidatesTags: ['Page']
     }),
     updatePage: builder.mutation({
-      query: ({ slug, ...body }) => ({
-        url: `/update/${slug}`,
-        method: 'PUT',
-        body
-      }),
+      query: (data) => {
+        console.log(`${API_URL}/page/${data.slug}`);
+        return ({
+          url: `/${data.slug}`,
+          method: 'PUT',
+          body: data
+        });
+      },
       invalidatesTags: ['Page']
     }),
     deletePage: builder.mutation({
       query: ({ slug }) => ({
-        url: `/delete/${slug}`,
+        url: `/${slug}`,
         method: 'DELETE',
       }),
       invalidatesTags: ['Page']

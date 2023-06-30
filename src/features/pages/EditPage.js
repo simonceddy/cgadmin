@@ -21,11 +21,13 @@ function EditPage() {
     const result = await updatePage({
       title: data.title, slug: data.slug, id: data.id, body
     });
-    if (result.data.success) {
+    console.log(result);
+    if (result.data?.success) {
       refetch();
       setMessage('Saved!');
+    } else {
+      setMessage('An error occurred...');
     }
-    console.log(result);
   };
 
   const navigate = useNavigate();
