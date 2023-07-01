@@ -1,13 +1,9 @@
+import axios from 'axios';
 import { MEDIA_URL } from '../consts';
-import { token } from './getCSRF';
 
 export function srcUrl(src) {
   return `${MEDIA_URL}/get/${src}`;
 }
-
-const headers = new Headers({
-  'X-XSRF-TOKEN': token
-});
 
 /**
  * Upload a file
@@ -18,13 +14,12 @@ export async function upload(file) {
   const b = await file.arrayBuffer();
   console.log(b);
   const formData = new FormData();
-  formData.append(file.name || 'file', file);
-  const res = await fetch(`${MEDIA_URL}/upload`, {
-    method: 'POST',
-    body: formData,
-    headers,
+  formData.append('uploaded-file', file);
+  const res = await axios.post(`${MEDIA_URL}/upload`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
   });
-  const json = await res.json();
   console.log(res);
-  return json.src ? srcUrl(json.src) : null;
+  return res.data.src ? srcUrl(res.data.src) : null;
 }

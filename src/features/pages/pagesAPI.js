@@ -1,13 +1,16 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import { API_URL } from '../../consts';
+import { axiosBaseQuery } from '../../util/axiosClient';
 
 export const pagesAPI = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: `${API_URL}/page` }),
+  baseQuery: axiosBaseQuery({
+    baseUrl: `${API_URL}/page`,
+  }),
   reducerPath: 'pagesAPI',
   tagTypes: ['Page'],
   endpoints: (builder) => ({
     fetchPages: builder.query({
-      query: () => '/',
+      query: () => ({ url: '/' }),
       providesTags: (result, error) => {
         if (error) console.error(error);
         return (result
@@ -22,9 +25,9 @@ export const pagesAPI = createApi({
       providesTags: ['Page']
     }),
     addPage: builder.mutation({
-      query: ({ ...body }) => ({
+      query: ({ ...data }) => ({
         method: 'POST',
-        body,
+        data,
         url: '/'
       }),
       invalidatesTags: ['Page']
@@ -35,7 +38,7 @@ export const pagesAPI = createApi({
         return ({
           url: `/${data.slug}`,
           method: 'PUT',
-          body: data
+          data: { ...data }
         });
       },
       invalidatesTags: ['Page']
